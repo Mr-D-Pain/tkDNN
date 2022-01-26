@@ -12,10 +12,10 @@ set(CMAKE_CXX_FLAGS "/O2 /FS /EHsc")
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif(WIN32)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/tkDNN)
-include_directories("/home/dave/TensorRT-7.1.3.4/include")
-include_directories("/home/dave/TensorRT-7.1.3.4/lib")
-set(CMAKE_PREFIX_PATH "/home/dave/TensorRT-7.1.3.4/include")
-set(CMAKE_PREFIX_PATH "/home/dave/TensorRT-7.1.3.4/lib")
+#include_directories("/home/dave/TensorRT-7.1.3.4/include")
+#include_directories("/home/dave/TensorRT-7.1.3.4/lib")
+#set(CMAKE_PREFIX_PATH "/home/dave/TensorRT-7.1.3.4/include")
+#set(CMAKE_PREFIX_PATH "/home/dave/TensorRT-7.1.3.4/lib")
 
 # project specific flags
 if(DEBUG)
@@ -23,7 +23,7 @@ if(DEBUG)
 endif()
 
 if(TKDNN_PATH)
-    message("SET TKDNN_PATH:"${TKDNN_PATH})
+    message("SET TKDNN_PATH:" ${TKDNN_PATH})
     add_definitions(-DTKDNN_PATH="${TKDNN_PATH}")
 else()
     add_definitions(-DTKDNN_PATH="${CMAKE_CURRENT_SOURCE_DIR}")
@@ -76,6 +76,9 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${CUDA_INCLUDE_DIRS} ${O
 add_library(tkDNN SHARED ${tkdnn_SRC})
 target_link_libraries(tkDNN ${tkdnn_LIBS})
 
+add_executable(test_yolo4tiny tests/darknet/yolo4tiny.cpp)
+target_link_libraries(test_yolo4tiny tkDNN)
+
 #static 
 #add_library(tkDNN_static STATIC ${tkdnn_SRC})
 #target_link_libraries(tkDNN_static ${tkdnn_LIBS})
@@ -121,6 +124,7 @@ target_link_libraries(test_mobilenetv2ssd512 tkDNN)
 ]]
 
 # BACKBONES
+#[[
 add_executable(test_resnet101 tests/backbones/resnet101/resnet101.cpp)
 target_link_libraries(test_resnet101 tkDNN)
 
@@ -170,6 +174,7 @@ target_link_libraries(demoTracker tkDNN)
 
 add_executable(seg_demo demo/demo/seg_demo.cpp)
 target_link_libraries(seg_demo tkDNN)
+]]
 
 #-------------------------------------------------------------------------------
 # Install
@@ -178,6 +183,7 @@ target_link_libraries(seg_demo tkDNN)
 #    set (CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" 
 #         CACHE PATH "default install path" FORCE)
 #endif()
+set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/install/")
 message("install dir:" ${CMAKE_INSTALL_PREFIX})
 install(DIRECTORY include/ DESTINATION include/)
 install(TARGETS tkDNN kernels DESTINATION lib)

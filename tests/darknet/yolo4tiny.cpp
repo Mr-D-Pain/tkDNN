@@ -4,8 +4,8 @@
 #include "test.h"
 #include "DarknetParser.h"
 
-int main() {
-    std::string bin_path  = "yolo4tiny-face";
+int main(int argc, char **argv) {
+    std::string bin_path  = argv[1]/*"yolo4tiny-face"*/;
     std::vector<std::string> input_bins = {
             bin_path + "/layers/input.bin"
     };
@@ -14,8 +14,8 @@ int main() {
             bin_path + "/debug/layer37_out.bin"
     };
     std::string wgs_path  = bin_path + "/layers";
-    std::string cfg_path  = "/home/dave/uni/tkDNN/build/yolo4tiny-face/yolov4-tiny-obj.cfg";
-    std::string name_path = "/home/dave/uni/tkDNN/build/yolo4tiny-face/obj.names";
+    std::string cfg_path  = bin_path + "/yolov4-tiny-obj.cfg";
+    std::string name_path = bin_path + "/obj.names";
    // downloadWeightsifDoNotExist(input_bins[0], bin_path, "https://cloud.hipert.unimore.it/s/iRnc4pSqmx78gJs/download");
 
 //    std::string bin_path  = "yolo4tiny";
