@@ -25,7 +25,7 @@ if(CUDNN_LIBRARY)
     )
   endif()
 
-  message("-- Found CUDNN: " ${CUDNN_LIBRARY})
+  message("-- Found CUDNN -: " ${CUDNN_LIBRARY})
   message("-- Found CUDNN include: " ${CUDNN_INCLUDE_DIR})
 endif()
 

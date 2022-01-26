@@ -3,14 +3,19 @@ cmake_minimum_required(VERSION 3.15)
 project (tkDNN)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 if(UNIX)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fPIC -Wno-deprecated-declarations -Wno-unused-variable ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -fPIC -Wno-deprecated-declarations -Wno-unused-variable ")
+
 endif()
 if(WIN32)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "/O2 /FS /EHsc")
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif(WIN32)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/tkDNN)
+include_directories("/home/dave/TensorRT-7.1.3.4/include")
+include_directories("/home/dave/TensorRT-7.1.3.4/lib")
+set(CMAKE_PREFIX_PATH "/home/dave/TensorRT-7.1.3.4/include")
+set(CMAKE_PREFIX_PATH "/home/dave/TensorRT-7.1.3.4/lib")
 
 # project specific flags
 if(DEBUG)
@@ -76,6 +81,7 @@ target_link_libraries(tkDNN ${tkdnn_LIBS})
 #target_link_libraries(tkDNN_static ${tkdnn_LIBS})
 
 # SMALL NETS
+#[==[
 add_executable(test_simple tests/simple/test_simple.cpp)
 target_link_libraries(test_simple tkDNN)
 
@@ -87,9 +93,11 @@ target_link_libraries(test_mnistRT tkDNN)
 
 add_executable(test_imuodom tests/imuodom/imuodom.cpp)
 target_link_libraries(test_imuodom tkDNN)
-
+#]==]
 # DARKNET
 file(GLOB darknet_SRC "tests/darknet/*.cpp")
+#[[
+
 foreach(test_SRC ${darknet_SRC})
     get_filename_component(test_NAME "${test_SRC}" NAME_WE)
     set(test_NAME test_${test_NAME})
@@ -97,8 +105,11 @@ foreach(test_SRC ${darknet_SRC})
     target_link_libraries(${test_NAME} tkDNN)
     install(TARGETS ${test_NAME} DESTINATION bin)
 endforeach()
+]]
 
 # MOBILENET
+#[[
+
 add_executable(test_mobilenetv2ssd tests/mobilenet/mobilenetv2ssd/mobilenetv2ssd.cpp)
 target_link_libraries(test_mobilenetv2ssd tkDNN)
 
@@ -107,6 +118,7 @@ target_link_libraries(test_bdd-mobilenetv2ssd tkDNN)
 
 add_executable(test_mobilenetv2ssd512 tests/mobilenet/mobilenetv2ssd512/mobilenetv2ssd512.cpp)
 target_link_libraries(test_mobilenetv2ssd512 tkDNN)
+]]
 
 # BACKBONES
 add_executable(test_resnet101 tests/backbones/resnet101/resnet101.cpp)
@@ -169,10 +181,13 @@ target_link_libraries(seg_demo tkDNN)
 message("install dir:" ${CMAKE_INSTALL_PREFIX})
 install(DIRECTORY include/ DESTINATION include/)
 install(TARGETS tkDNN kernels DESTINATION lib)
-install(TARGETS test_simple test_mnist test_mnistRT test_rtinference demo map_demo DESTINATION bin)
+#install(TARGETS test_simple test_mnist test_mnistRT test_rtinference demo map_demo DESTINATION bin)
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/cmake/" # source directory
         DESTINATION "share/tkDNN/cmake/" # target directory
 )
+#[[
+
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tests/" # source directory
         DESTINATION "share/tkDNN/tests" # target directory
 )
+]]

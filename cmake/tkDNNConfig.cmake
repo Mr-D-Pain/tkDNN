@@ -1,6 +1,6 @@
 message("-- Found tkDNN")
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
-set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} --std=c++11 -fPIC")
+set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} --std=c++14 -fPIC")
 
 find_package(CUDA REQUIRED)
 find_package(OpenCV REQUIRED)

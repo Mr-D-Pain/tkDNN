@@ -85,8 +85,11 @@ int main(int argc, char *argv[]) {
     gRun = true;
 
     cv::VideoCapture cap(input);
-    if(!cap.isOpened())
+    std::cout<<"camerastream started started\n";
+    if(!cap.isOpened()){
+	std::cout<<"No video stream\n";
         gRun = false; 
+}
     else
         std::cout<<"camera started\n";
 

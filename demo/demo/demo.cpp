@@ -78,12 +78,17 @@ int main(int argc, char *argv[]) {
     }
 
     detNN->init(net, n_classes, n_batch, conf_thresh);
+    std::cout<<"Network was initializes susessfully\n";
 
     gRun = true;
+    cv::VideoCapture cap(0);
+    double fps = cap.get(cv::CAP_PROP_FPS);
 
-    cv::VideoCapture cap(input);
-    if(!cap.isOpened())
-        gRun = false; 
+    std::cout<<"started capture via input\n";
+    if(!cap.isOpened()){
+        std::cout<<"tested input, input is empty!\n";
+        gRun = false;
+    }
     else
         std::cout<<"camera started\n";
 
@@ -120,6 +125,9 @@ int main(int argc, char *argv[]) {
     
         //inference
         detNN->update(batch_dnn_input, n_batch);
+        for (const auto &bat: detNN->detected) {
+            std::cout << std::to_string(bat.prob)<<std::endl;
+        }
         detNN->draw(batch_frame);
 
         if(show){
